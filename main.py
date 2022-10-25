@@ -1,2 +1,1 @@
-print('asdf hello world')
-강인수
+print('asdf hello worldasdfasdf')
