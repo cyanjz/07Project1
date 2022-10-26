@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 a = 12345
+isk = 'insoo'
 
 label = np.load('D:\Workspace\SW_academy/label.npy')
 label = tf.keras.utils.to_categorical(label.astype('int8') - 1)
