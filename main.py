@@ -5,7 +5,7 @@ from os import listdir
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-a = 1234
+a = 12345
 
 label = np.load('D:\Workspace\SW_academy/label.npy')
 label = tf.keras.utils.to_categorical(label.astype('int8') - 1)
