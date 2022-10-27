@@ -1,139 +1,86 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "2831b1a0",
-   "metadata": {
-    "pycharm": {
-     "name": "#%%\n"
-    }
-   },
-   "outputs": [],
-   "source": [
-    "import requests, json, urllib.request\n",
-    "from requests import request,get,post\n",
-    "from bs4 import BeautifulSoup"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "e9dfd0d7",
-   "metadata": {
-    "pycharm": {
-     "name": "#%%\n"
-    }
-   },
-   "outputs": [],
-   "source": [
-    "print('수정')"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "0fbfa644",
-   "metadata": {
-    "pycharm": {
-     "name": "#%%\n"
-    }
-   },
-   "outputs": [],
-   "source": [
-    "seed='https://search.shopping.naver.com/api/search/all'\n",
-    "cookies = {\n",
-    "    '_ga_7VKFYR6RV1': 'GS1.1.1633001955.6.1.1633001963.52',\n",
-    "    '_ga': 'GA1.2.429413694.1608041921',\n",
-    "    'NNB': '243UWQ65ZFMWG',\n",
-    "    'nid_inf': '1354423238',\n",
-    "    'NID_AUT': 'fnF/vVzivT5nQsPKRQ0oIZvnzXFs8cp+/J/eZRICyZBPf1b6yp1vWiGUx3RP9AQX',\n",
-    "    'NID_JKL': '7CnD1edRJ2sGkbrVYP/FH0f+Qyv3VmrNiUT5atx6AsA=',\n",
-    "    'NID_SES': 'AAABb852KskcogCiplJo/ZeGT/cvJf+zBYphX7+fxIugHwXBauozcTfZdIgBhg2aq88A/WYGj5NigmVSRI4iWiJ6NslPGH1cegn4Veg8WOFFX4UJDClFcMgkjm74INi+sVPgb8CQZtbqeFCPvuU8jacEpbrnaxC5vo/oC2w/cKR1J9pgmBQ82FuW60XskHzPAFcKbvvOTgYel4XLQZViWAfwzSf184SKHZ+pS/o0FKUvDGn9CHLvEyViLvC9FqRB+oJTHQxCuxuQXWmfFQ83fMnEMQJMplJfj3a1pXd7Dc+CZJLnQ5Uy+SX4bhwa/c4WbKvNm2a3nE/+KYSnZx0wealsvmQi4nCNHDJA/hAYb3rcAkWodchzCK1M6GBjM0g9UVqhHElu8RMb2/9qrBexXiSfPpiyp+HbAiQN79Ju4Bl7Nu3WaH3u56AeLhnrk7B3HHszQHGkqUavDMzqRI8tHSG1F0pCgsPZ609oR9yacmQYjdh7',\n",
-    "    'sus_val': 'W5VMnuZC7w/6G5v1v0j6gbFh',\n",
-    "    'autocomplete': 'use',\n",
-    "    'AD_SHP_BID': '26',\n",
-    "    'spage_uid': '',\n",
-    "}\n",
-    "\n",
-    "headers = {\n",
-    "    'authority': 'search.shopping.naver.com',\n",
-    "    'accept': 'application/json, text/plain, */*',\n",
-    "    'accept-language': 'ko,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7,zh;q=0.6',\n",
-    "    'cache-control': 'no-cache',\n",
-    "    # Requests sorts cookies= alphabetically\n",
-    "    # 'cookie': '_ga_7VKFYR6RV1=GS1.1.1633001955.6.1.1633001963.52; _ga=GA1.2.429413694.1608041921; NNB=243UWQ65ZFMWG; nid_inf=1354423238; NID_AUT=fnF/vVzivT5nQsPKRQ0oIZvnzXFs8cp+/J/eZRICyZBPf1b6yp1vWiGUx3RP9AQX; NID_JKL=7CnD1edRJ2sGkbrVYP/FH0f+Qyv3VmrNiUT5atx6AsA=; NID_SES=AAABb852KskcogCiplJo/ZeGT/cvJf+zBYphX7+fxIugHwXBauozcTfZdIgBhg2aq88A/WYGj5NigmVSRI4iWiJ6NslPGH1cegn4Veg8WOFFX4UJDClFcMgkjm74INi+sVPgb8CQZtbqeFCPvuU8jacEpbrnaxC5vo/oC2w/cKR1J9pgmBQ82FuW60XskHzPAFcKbvvOTgYel4XLQZViWAfwzSf184SKHZ+pS/o0FKUvDGn9CHLvEyViLvC9FqRB+oJTHQxCuxuQXWmfFQ83fMnEMQJMplJfj3a1pXd7Dc+CZJLnQ5Uy+SX4bhwa/c4WbKvNm2a3nE/+KYSnZx0wealsvmQi4nCNHDJA/hAYb3rcAkWodchzCK1M6GBjM0g9UVqhHElu8RMb2/9qrBexXiSfPpiyp+HbAiQN79Ju4Bl7Nu3WaH3u56AeLhnrk7B3HHszQHGkqUavDMzqRI8tHSG1F0pCgsPZ609oR9yacmQYjdh7; sus_val=W5VMnuZC7w/6G5v1v0j6gbFh; autocomplete=use; AD_SHP_BID=26; spage_uid=',\n",
-    "    'logic': 'PART',\n",
-    "    'pragma': 'no-cache',\n",
-    "    'referer': 'https://search.shopping.naver.com/search/all?frm=NVSHATC&origQuery=%EC%B9%A8%EB%8C%80&pagingIndex=2&pagingSize=40&productSet=total&query=%EC%B9%A8%EB%8C%80&sort=rel&timestamp=&viewType=list',\n",
-    "    'sec-ch-ua': '\"Chromium\";v=\"106\", \"Microsoft Edge\";v=\"106\", \"Not;A=Brand\";v=\"99\"',\n",
-    "    'sec-ch-ua-mobile': '?0',\n",
-    "    'sec-ch-ua-platform': '\"Windows\"',\n",
-    "    'sec-fetch-dest': 'empty',\n",
-    "    'sec-fetch-mode': 'cors',\n",
-    "    'sec-fetch-site': 'same-origin',\n",
-    "    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36 Edg/106.0.1370.52',\n",
-    "}\n",
-    "\n",
-    "params = {\n",
-    "    'sort': 'rel',\n",
-    "    'pagingIndex': None,\n",
-    "    'pagingSize': '40',\n",
-    "    'viewType': 'list',\n",
-    "    'productSet': 'total',\n",
-    "    'deliveryFee': '',\n",
-    "    'deliveryTypeValue': '',\n",
-    "    'frm': 'NVSHATC',\n",
-    "    'query': '침대',\n",
-    "    'origQuery': '침대',\n",
-    "    'iq': '',\n",
-    "    'eq': '',\n",
-    "    'xq': '',\n",
-    "}\n",
-    "\n",
-    "params['query']=params['origQuery']=input('검색어:')\n",
-    "cate=int(input('카테고리 번호:'))\n",
-    "params['pagingIndex']=1\n",
-    "\n",
-    "\n",
-    "while params['pagingIndex']!=None:\n",
-    "    resp=requests.get(seed, params=params, cookies=cookies, headers=headers)\n",
-    "    resp.text\n",
-    "    temp=json.loads(resp.text)\n",
-    "    temp\n",
-    "    i=1\n",
-    "    while i<=int(params['pagingSize']):\n",
-    "        for _ in temp['shoppingResult']['products']:\n",
-    "            url=_['imageUrl']\n",
-    "            urlresp=get(url)\n",
-    "            j=(params['pagingIndex']-1)*40+i\n",
-    "            fileName=f'{cate}-{j}'+'.jpg'\n",
-    "            with open('./bed/'+fileName,'wb') as fp:\n",
-    "                fp.write(urlresp.content)\n",
-    "            i+=1\n",
-    "    params['pagingIndex']+=1"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3 (ipykernel)",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.9.12"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[ ]:
+
+
+import requests, json, urllib.request
+from requests import request,get,post
+from bs4 import BeautifulSoup
+
+
+# In[ ]:
+
+
+seed='https://search.shopping.naver.com/api/search/all'
+cookies = {
+    '_ga_7VKFYR6RV1': 'GS1.1.1633001955.6.1.1633001963.52',
+    '_ga': 'GA1.2.429413694.1608041921',
+    'NNB': '243UWQ65ZFMWG',
+    'nid_inf': '1354423238',
+    'NID_AUT': 'fnF/vVzivT5nQsPKRQ0oIZvnzXFs8cp+/J/eZRICyZBPf1b6yp1vWiGUx3RP9AQX',
+    'NID_JKL': '7CnD1edRJ2sGkbrVYP/FH0f+Qyv3VmrNiUT5atx6AsA=',
+    'NID_SES': 'AAABb852KskcogCiplJo/ZeGT/cvJf+zBYphX7+fxIugHwXBauozcTfZdIgBhg2aq88A/WYGj5NigmVSRI4iWiJ6NslPGH1cegn4Veg8WOFFX4UJDClFcMgkjm74INi+sVPgb8CQZtbqeFCPvuU8jacEpbrnaxC5vo/oC2w/cKR1J9pgmBQ82FuW60XskHzPAFcKbvvOTgYel4XLQZViWAfwzSf184SKHZ+pS/o0FKUvDGn9CHLvEyViLvC9FqRB+oJTHQxCuxuQXWmfFQ83fMnEMQJMplJfj3a1pXd7Dc+CZJLnQ5Uy+SX4bhwa/c4WbKvNm2a3nE/+KYSnZx0wealsvmQi4nCNHDJA/hAYb3rcAkWodchzCK1M6GBjM0g9UVqhHElu8RMb2/9qrBexXiSfPpiyp+HbAiQN79Ju4Bl7Nu3WaH3u56AeLhnrk7B3HHszQHGkqUavDMzqRI8tHSG1F0pCgsPZ609oR9yacmQYjdh7',
+    'sus_val': 'W5VMnuZC7w/6G5v1v0j6gbFh',
+    'autocomplete': 'use',
+    'AD_SHP_BID': '26',
+    'spage_uid': '',
 }
+
+headers = {
+    'authority': 'search.shopping.naver.com',
+    'accept': 'application/json, text/plain, */*',
+    'accept-language': 'ko,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7,zh;q=0.6',
+    'cache-control': 'no-cache',
+    # Requests sorts cookies= alphabetically
+    # 'cookie': '_ga_7VKFYR6RV1=GS1.1.1633001955.6.1.1633001963.52; _ga=GA1.2.429413694.1608041921; NNB=243UWQ65ZFMWG; nid_inf=1354423238; NID_AUT=fnF/vVzivT5nQsPKRQ0oIZvnzXFs8cp+/J/eZRICyZBPf1b6yp1vWiGUx3RP9AQX; NID_JKL=7CnD1edRJ2sGkbrVYP/FH0f+Qyv3VmrNiUT5atx6AsA=; NID_SES=AAABb852KskcogCiplJo/ZeGT/cvJf+zBYphX7+fxIugHwXBauozcTfZdIgBhg2aq88A/WYGj5NigmVSRI4iWiJ6NslPGH1cegn4Veg8WOFFX4UJDClFcMgkjm74INi+sVPgb8CQZtbqeFCPvuU8jacEpbrnaxC5vo/oC2w/cKR1J9pgmBQ82FuW60XskHzPAFcKbvvOTgYel4XLQZViWAfwzSf184SKHZ+pS/o0FKUvDGn9CHLvEyViLvC9FqRB+oJTHQxCuxuQXWmfFQ83fMnEMQJMplJfj3a1pXd7Dc+CZJLnQ5Uy+SX4bhwa/c4WbKvNm2a3nE/+KYSnZx0wealsvmQi4nCNHDJA/hAYb3rcAkWodchzCK1M6GBjM0g9UVqhHElu8RMb2/9qrBexXiSfPpiyp+HbAiQN79Ju4Bl7Nu3WaH3u56AeLhnrk7B3HHszQHGkqUavDMzqRI8tHSG1F0pCgsPZ609oR9yacmQYjdh7; sus_val=W5VMnuZC7w/6G5v1v0j6gbFh; autocomplete=use; AD_SHP_BID=26; spage_uid=',
+    'logic': 'PART',
+    'pragma': 'no-cache',
+    'referer': 'https://search.shopping.naver.com/search/all?frm=NVSHATC&origQuery=%EC%B9%A8%EB%8C%80&pagingIndex=2&pagingSize=40&productSet=total&query=%EC%B9%A8%EB%8C%80&sort=rel&timestamp=&viewType=list',
+    'sec-ch-ua': '"Chromium";v="106", "Microsoft Edge";v="106", "Not;A=Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36 Edg/106.0.1370.52',
+}
+
+params = {
+    'sort': 'rel',
+    'pagingIndex': None,
+    'pagingSize': '40',
+    'viewType': 'list',
+    'productSet': 'total',
+    'deliveryFee': '',
+    'deliveryTypeValue': '',
+    'frm': 'NVSHATC',
+    'query': '침대',
+    'origQuery': '침대',
+    'iq': '',
+    'eq': '',
+    'xq': '',
+}
+
+params['query']=params['origQuery']=input('검색어:')
+cate=int(input('카테고리 번호:'))
+params['pagingIndex']=1
+
+
+while params['pagingIndex']!=None:
+    resp=requests.get(seed, params=params, cookies=cookies, headers=headers)
+    resp.text
+    temp=json.loads(resp.text)
+    temp
+    i=1
+    while i<=int(params['pagingSize']):
+        for _ in temp['shoppingResult']['products']:
+            url=_['imageUrl']
+            urlresp=get(url)
+            j=(params['pagingIndex']-1)*40+i
+            fileName=f'{cate}-{j}'+'.jpg'
+            with open('./bed/'+fileName,'wb') as fp:
+                fp.write(urlresp.content)
+            i+=1
+    params['pagingIndex']+=1
+
