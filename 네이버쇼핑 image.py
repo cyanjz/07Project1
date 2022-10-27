@@ -4,7 +4,11 @@
    "cell_type": "code",
    "execution_count": null,
    "id": "2831b1a0",
-   "metadata": {},
+   "metadata": {
+    "pycharm": {
+     "name": "#%%\n"
+    }
+   },
    "outputs": [],
    "source": [
     "import requests, json, urllib.request\n",
@@ -15,8 +19,26 @@
   {
    "cell_type": "code",
    "execution_count": null,
+   "id": "e9dfd0d7",
+   "metadata": {
+    "pycharm": {
+     "name": "#%%\n"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "print('수정')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
    "id": "0fbfa644",
-   "metadata": {},
+   "metadata": {
+    "pycharm": {
+     "name": "#%%\n"
+    }
+   },
    "outputs": [],
    "source": [
     "seed='https://search.shopping.naver.com/api/search/all'\n",
