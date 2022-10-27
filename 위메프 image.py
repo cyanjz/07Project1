@@ -42,10 +42,19 @@ while params['page']!=None:
     for _ in temp['data']['deals']:
         url=_['largeImgUrl']
         urlresp=get(url)
+        a=re.search(r'(\w+)(?:\s)([\w\s]+)(?:\s)([독립|본넬]?)',_['dispNm'])
+        try:
+            brand_name=a.group(1)
+            product_name=a.group(2)
+        except:pass
+        
         j=(params['page']-1)*82+i
-        fileName=f'{cate}-{j}'+'.jpg'
-        with open('./bed1/'+fileName,'wb') as fp:
-            fp.write(urlresp.content)
+        fileName=f'{cate}-{brand_name}-{product_name}-{j}'+'.jpg'
+        
+        try:
+            with open('./bed/'+fileName,'wb') as fp:
+                fp.write(urlresp.content)
+        except: pass
         i+=1
     params['page']+=1
 
