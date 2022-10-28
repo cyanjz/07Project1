@@ -79,14 +79,24 @@ while params['pagingIndex']!=None:
             url=_['imageUrl']
             urlresp=get(url)
             a=re.search(r'(\w+)(?:\s)(.+)',_['productTitle'])
-            brand_name=a.group(1)
-            product_name=a.group(2)
+            try:
+                brand_name=a.group(1)
+                product_name=a.group(2)
+            except: pass
+                
             j=(params['pagingIndex']-1)*40+i
             fileName=f'{cate}-{brand_name}-{product_name}-{j}'+'.jpg'
+            
             try:
-                with open('./bed/'+fileName,'wb') as fp:
+                with open('./table/'+fileName,'wb') as fp:
                     fp.write(urlresp.content)
             except: pass
             i+=1
     params['pagingIndex']+=1
+
+
+# In[ ]:
+
+
+
 
