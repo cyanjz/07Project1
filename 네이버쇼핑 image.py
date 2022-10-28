@@ -7,6 +7,7 @@
 import requests, json, urllib.request
 from requests import request,get,post
 from bs4 import BeautifulSoup
+import re
 
 
 # In[ ]:
@@ -77,10 +78,15 @@ while params['pagingIndex']!=None:
         for _ in temp['shoppingResult']['products']:
             url=_['imageUrl']
             urlresp=get(url)
+            a=re.search(r'(\w+)(?:\s)(.+)',_['productTitle'])
+            brand_name=a.group(1)
+            product_name=a.group(2)
             j=(params['pagingIndex']-1)*40+i
-            fileName=f'{cate}-{j}'+'.jpg'
-            with open('./bed/'+fileName,'wb') as fp:
-                fp.write(urlresp.content)
+            fileName=f'{cate}-{brand_name}-{product_name}-{j}'+'.jpg'
+            try:
+                with open('./bed/'+fileName,'wb') as fp:
+                    fp.write(urlresp.content)
+            except: pass
             i+=1
     params['pagingIndex']+=1
 
