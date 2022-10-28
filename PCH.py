@@ -30,9 +30,10 @@ class ScrapUtility():
       return session
 
 class pch():
-    def __init__(self):
-        self.nss = 'https://search.shopping.naver.com/api/search/all'
-        self.nsc = {
+    NS = {
+        'seed': 'https://search.shopping.naver.com/api/search/all',
+
+        'cookies': {
             '_ga_7VKFYR6RV1': 'GS1.1.1633001955.6.1.1633001963.52',
             '_ga': 'GA1.2.429413694.1608041921',
             'NNB': '243UWQ65ZFMWG',
@@ -44,8 +45,9 @@ class pch():
             'autocomplete': 'use',
             'AD_SHP_BID': '26',
             'spage_uid': '',
-        }
-        self.nsh = {
+        },
+
+        'header': {
             'authority': 'search.shopping.naver.com',
             'accept': 'application/json, text/plain, */*',
             'accept-language': 'ko,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7,zh;q=0.6',
@@ -62,8 +64,9 @@ class pch():
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36 Edg/106.0.1370.52',
-        }
-        self.nsp = {
+        },
+
+        'params': {
             'sort': 'rel',
             'pagingIndex': None,
             'pagingSize': '40',
@@ -78,6 +81,23 @@ class pch():
             'eq': '',
             'xq': '',
         }
+    }
 
-        self.wmph = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.33'}
+
+    WMP = {
+            'seed' : 'https://search.wemakeprice.com/api/wmpsearch/api/v3.0/wmp-search/search.json',
+
+            'cookies' : None,
+
+            'params' : {
+            'searchType': 'DEFAULT',
+            'search_cate': 'top',
+            'keyword': None,
+            'isRec': 1,
+            '_service': 5,
+            '_type': 3,
+            'page': None
+            },
+
+            'header' : {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.33'}
+        }
