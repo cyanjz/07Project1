@@ -92,5 +92,3 @@ class pch():
             '_type': 3,
             'page': None
         }
-    def __init__(self):
-        pass
