@@ -5,47 +5,19 @@ from bs4 import BeautifulSoup
 import re
 import PCH
 
-
-class ScrapUtility():
-    def build_header(self, headerstring):
-      '''
-      Make header dictionary automatically.
-      header string format sould be :
-        key: value
-        key: value
-      returns header(dict)
-      '''
-      header = dict()
-      for line in headerstring.splitlines():
-        if len(line) > 0 and line[0] != ':':
-          kv = re.search('^(.+)?: (.*)', line)
-          try:
-            header[kv.group(1)] = kv.group(2)
-          except:
-            pass
-      return header
-
-    def set_cookies(self, session, c):
-      '''
-      set cookies for session
-      '''
-      for _ in c.splitlines():
-        if len(_) > 1:
-          kv = _.split('\t')
-          session.cookies.set(kv[0],kv[1])
-      return session
-
 class ScrapImg:
     def __init__(self, catdict):
         self.pch = PCH.pch()
-
+        self.catdict = catdict
     def NaverShopping(self, query : str, path : str, catdict : dict):
+        if path[-1] != '/':
+            path = path + '/'
         self.pch.nsp['query'] = self.pch.nsp['origQuery'] = query
-        cate = cardict[query]
+        cate = catdict[query]
         self.pch.nsp['pagingIndex'] = 1
 
         while self.pch.nsp['pagingIndex'] != None:
-            resp = requests.get(seed, params=params, cookies=cookies, headers=headers)
+            resp = requests.get(self.pch.nss, params=self.pch.nsp, cookies=self.pch.nsc, headers=self.pch.nsh)
             temp = json.loads(resp.text)
             i = 1
             while i <= int(self.pch.nsp['pagingSize']):
@@ -63,10 +35,54 @@ class ScrapImg:
                     fileName = f'{cate}-{brand_name}-{product_name}-{j}' + '.jpg'
 
                     try:
-                        with open('./table/' + fileName, 'wb') as fp:
+                        with open(path + fileName, 'wb') as fp:
                             fp.write(urlresp.content)
                     except:
                         pass
                     i += 1
-            self.nsp['pagingIndex'] += 1
+            self.pch.nsp['pagingIndex'] += 1
 
+    def WeMakePrice(self):
+        # In[ ]:
+
+        seed = 'https://search.wemakeprice.com/api/wmpsearch/api/v3.0/wmp-search/search.json'
+        params = {
+            'searchType': 'DEFAULT',
+            'search_cate': 'top',
+            'keyword': None,
+            'isRec': 1,
+            '_service': 5,
+            '_type': 3,
+            'page': None
+        }
+
+        params['keyword'] = input('검색어:')
+        cate = int(input('카테고리 번호:'))
+        params['page'] = 1
+
+        while params['page'] != None:
+            resp = get(seed, params=params, headers=headers)
+            resp.headers
+            dom = BeautifulSoup(resp.text, 'html.parser')
+            temp = resp.json()
+            i = 1
+            for _ in temp['data']['deals']:
+                url = _['largeImgUrl']
+                urlresp = get(url)
+                a = re.search(r'(\w+)(?:\s)([\w\s]+)(?:\s)([독립|본넬]?)', _['dispNm'])
+                try:
+                    brand_name = a.group(1)
+                    product_name = a.group(2)
+                except:
+                    pass
+
+                j = (params['page'] - 1) * 82 + i
+                fileName = f'{cate}-{brand_name}-{product_name}-{j}' + '.jpg'
+
+                try:
+                    with open('./bed/' + fileName, 'wb') as fp:
+                        fp.write(urlresp.content)
+                except:
+                    pass
+                i += 1
+            params['page'] += 1

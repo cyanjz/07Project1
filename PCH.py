@@ -1,6 +1,37 @@
 #to specify cookies, parameters and headers for scraping
+
+class ScrapUtility():
+    def build_header(self, headerstring):
+      '''
+      Make header dictionary automatically.
+      header string format sould be :
+        key: value
+        key: value
+      returns header(dict)
+      '''
+      header = dict()
+      for line in headerstring.splitlines():
+        if len(line) > 0 and line[0] != ':':
+          kv = re.search('^(.+)?: (.*)', line)
+          try:
+            header[kv.group(1)] = kv.group(2)
+          except:
+            pass
+      return header
+
+    def set_cookies(self, session, c):
+      '''
+      set cookies for session
+      '''
+      for _ in c.splitlines():
+        if len(_) > 1:
+          kv = _.split('\t')
+          session.cookies.set(kv[0],kv[1])
+      return session
+
 class pch():
     def __init__(self):
+        self.nss = 'https://search.shopping.naver.com/api/search/all'
         self.nsc = {
             '_ga_7VKFYR6RV1': 'GS1.1.1633001955.6.1.1633001963.52',
             '_ga': 'GA1.2.429413694.1608041921',
@@ -47,3 +78,6 @@ class pch():
             'eq': '',
             'xq': '',
         }
+
+        self.wmph = {
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.33'}
