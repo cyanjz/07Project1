@@ -11,7 +11,7 @@ class ScrapImg:
         if path[-1] != '/':
             path = path + '/'
         pch.nsp['query'] = pch.nsp['origQuery'] = query
-        cate = catdict[query]
+        cate = self.catdict[query]
         pch.nsp['pagingIndex'] = 1
         nbimg = 0
 
