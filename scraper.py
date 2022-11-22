@@ -7,14 +7,15 @@ from PCH import pch
 class ScrapImg:
     def __init__(self, catdict : dict):
         self.catdict = catdict
-    def NaverShopping(self, query : str, path : str):
+    def NaverShopping(self, query : str, path : str, imglimit : int):
         if path[-1] != '/':
             path = path + '/'
         pch.nsp['query'] = pch.nsp['origQuery'] = query
-        cate = catdict[query]
+        cate = self.catdict[query]
         pch.nsp['pagingIndex'] = 1
+        nbimg = 0
 
-        while pch.nsp['pagingIndex'] != None:
+        while pch.nsp['pagingIndex'] != None and nbimg < imglimit:
             resp = requests.get(pch.nss, params=pch.nsp, cookies=pch.nsc, headers=pch.nsh)
             temp = json.loads(resp.text)
             i = 1
@@ -39,16 +40,18 @@ class ScrapImg:
                     except:
                         pass
                     i += 1
+            nbimg += i - 1
             pch.nsp['pagingIndex'] += 1
 
-    def WeMakePrice(self, query : str, path : str):
+    def WeMakePrice(self, query : str, path : str, imglimit : int):
         if path[-1] != '/':
             path = path + '/'
         pch.wmpp['keyword'] = query
         cate = self.catdict[query]
         pch.wmpp['page'] = 1
+        nbimg = 0
 
-        while pch.wmpp['page'] != None:
+        while pch.wmpp['page'] != None and nbimg < imglimit:
             resp = requests.get(pch.wmps, params=pch.wmpp, headers=pch.wmph)
             resp.headers
             dom = BeautifulSoup(resp.text, 'html.parser')
@@ -73,4 +76,5 @@ class ScrapImg:
                 except:
                     pass
                 i += 1
+            nbimg += i-1
             pch.wmpp['page'] += 1

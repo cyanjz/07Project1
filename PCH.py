@@ -1,6 +1,8 @@
 #to specify cookies, parameters and headers for scraping
+import re
 
 class ScrapUtility():
+    @classmethod
     def build_header(self, headerstring):
       '''
       Make header dictionary automatically.
@@ -12,13 +14,15 @@ class ScrapUtility():
       header = dict()
       for line in headerstring.splitlines():
         if len(line) > 0 and line[0] != ':':
-          kv = re.search('^(.+)?: (.*)', line)
-          try:
-            header[kv.group(1)] = kv.group(2)
-          except:
-            pass
+            line = line.strip()
+            kv = re.search('^(.+)?: (.*)', line)
+            try:
+                header[kv.group(1)] = kv.group(2)
+            except:
+                pass
       return header
 
+    @classmethod
     def set_cookies(self, session, c):
       '''
       set cookies for session
@@ -28,6 +32,9 @@ class ScrapUtility():
           kv = _.split('\t')
           session.cookies.set(kv[0],kv[1])
       return session
+    @classmethod
+    def set_params(self, params):
+        return '&'.join([k+'='+v for k, v in params.items()])
 
 class pch():
     nss = 'https://search.shopping.naver.com/api/search/all'
@@ -92,5 +99,3 @@ class pch():
             '_type': 3,
             'page': None
         }
-    def __init__(self):
-        pass
