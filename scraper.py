@@ -7,12 +7,12 @@ from PCH import pch
 class ScrapImg:
     def __init__(self, catdict : dict):
         self.catdict = catdict
-    def NaverShopping(self, query : str, path : str, imglimit : int):
+    def NaverShopping(self, query : str, path : str, imglimit : int, startpg = 1):
         if path[-1] != '/':
             path = path + '/'
         pch.nsp['query'] = pch.nsp['origQuery'] = query
         cate = self.catdict[query]
-        pch.nsp['pagingIndex'] = 1
+        pch.nsp['pagingIndex'] = startpg
         nbimg = 0
 
         while pch.nsp['pagingIndex'] != None and nbimg < imglimit:
@@ -43,19 +43,19 @@ class ScrapImg:
             nbimg += i - 1
             pch.nsp['pagingIndex'] += 1
 
-    def WeMakePrice(self, query : str, path : str, imglimit : int):
+    def WeMakePrice(self, query : str, path : str, imglimit : int, startpg = 1):
         if path[-1] != '/':
             path = path + '/'
         pch.wmpp['keyword'] = query
         cate = self.catdict[query]
-        pch.wmpp['page'] = 1
+        pch.wmpp['page'] = startpg
         nbimg = 0
 
         while pch.wmpp['page'] != None and nbimg < imglimit:
             resp = requests.get(pch.wmps, params=pch.wmpp, headers=pch.wmph)
-            resp.headers
             dom = BeautifulSoup(resp.text, 'html.parser')
             temp = resp.json()
+            print(temp)
             i = 1
             for _ in temp['data']['deals']:
                 url = _['largeImgUrl']
