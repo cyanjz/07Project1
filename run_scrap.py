@@ -1,10 +1,10 @@
 from scraper import ScrapImg
 from PCH import pch
 
-catdict = {'모션베드' : 1}
+catdict = {'침대' : 1}
 scraper = ScrapImg(catdict)
-scraper.NaverShopping('모션베드', 'D:\Workspace\SW_academy\Project1images', 400)
-# scraper.WeMakePrice('모션베드', 'D:\Workspace\SW_academy\Project1images')
+scraper.NaverShopping('식탁용의자', 'D:\Workspace\SW_academy\Project1\Data\dinning_chair', 4000, 26)
+# scraper.WeMakePrice('의자', 'D:\Workspace\SW_academy\Project1\Data\chair_more', 8000, 25)
 
 # def run(path = None, query = None, catdict = None, site = None):
 #     scraper = ScrapImg(catdict)
