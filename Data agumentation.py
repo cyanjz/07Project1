@@ -1,2 +1,2 @@
-# 광고글자, 테두리 있는 이미지 삭제.
-# 테두리의 범위? ->
+import albumentations as A
+
