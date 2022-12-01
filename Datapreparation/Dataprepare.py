@@ -12,7 +12,7 @@ def chair_cls_p24(temp):
     result = "\n".join(modified)
     return result
 
-# stratify train/val/test split
+# stratified train/val/test split
 def build_imgcls_dict(imgp: str, labelp: str):
     """
     :param imgp: path to image files
@@ -35,7 +35,8 @@ def build_imgcls_dict(imgp: str, labelp: str):
         if target not in [k for k in img_dict]:
             img_dict[target] = list()
         img_dict[target].append(i)
-    return img_dict
+    maxfreq = max([len(v) for k, v in img_dict.items()])
+    return {k : (v, len(v)/maxfreq) for k, v in img_dict.itmes()}
 
 
 def save_imgd_labeld(imgs, label_path, img_path, save_root, cat="train", modification=None):
@@ -46,12 +47,17 @@ def save_imgd_labeld(imgs, label_path, img_path, save_root, cat="train", modific
     if 'labels' not in listdir(save_root + '\\' + cat):
         mkdir(save_root + '\\' + cat + '\\' + 'labels')
 
-    for img in imgs:
+    for img in imgs[0]:
         try:
             temp = Image.open(img_path + '\\' + img)
             temp.save(save_root + '\\' + cat + '\\' + 'images' + '\\' + img)
         except:
             print('failed to save/open image')
+
+        if 1 < imgs[1] < 128:
+            ITER = int(imgs[1])
+            for k in range(ITER):
+
 
         train_label = label_path + '\\' + img[:-4] + '.txt'
         with open(train_label, 'r') as fp:
@@ -66,13 +72,16 @@ def save_imgd_labeld(imgs, label_path, img_path, save_root, cat="train", modific
 
 def save_img_dict(save_root, img_dict, img_path, label_path, fraction, modification):
     for k, v in img_dict.items():
-        train = v[:int(len(v) * fraction[0])]  # train set
-        val = v[int(len(v) * fraction[0]): int(len(v) * fraction[0]) + int(len(v) * fraction[1])]
-        test = v[int(len(v) * fraction[0]) + int(len(v) * fraction[1]):]
+        train = (v[0][:int(len(v) * fraction[0])], v[1])  # train set
+        val = (v[0][int(len(v) * fraction[0]): int(len(v) * fraction[0]) + int(len(v) * fraction[1])], v[1])
+        test = (v[0][int(len(v) * fraction[0]) + int(len(v) * fraction[1]):], v[1])
         save_imgd_labeld(train, label_path, img_path, save_root, cat="train", modification=modification)
         save_imgd_labeld(val, label_path, img_path, save_root, cat="val", modification=modification)
         save_imgd_labeld(test, label_path, img_path, save_root, cat="test", modification=modification)
-
+# 2^7 = 128배까지 가능.
+# class 별로 분포를 보고 적은건 많이, 많은건 적게.
+# 비율이 중요.
+# 가장 많은 class를 기준으로 비율 계산. 128 * ratio 만큼 iteration 돌도록.
 
 def bed_chair_together(bed_imgp: str, chair_imgp: str, bed_labelp: str, chair_labelp: str,
                        save_root: str, bf=None, cf=None, fraction=(.7, 0.2)):
@@ -90,10 +99,10 @@ def bed_chair_together(bed_imgp: str, chair_imgp: str, bed_labelp: str, chair_la
     # :bid:
     # :bld:  {label_path : class}
 
-    # save imgs
+    # image dict
     bid = build_imgcls_dict(bed_imgp, bed_labelp)
     cid = build_imgcls_dict(chair_imgp, chair_labelp)
-
+    # save imgs
     save_img_dict(save_root, bid, bed_imgp, bed_labelp, fraction, bf)
     save_img_dict(save_root, cid, chair_imgp, chair_labelp, fraction, cf)
 
