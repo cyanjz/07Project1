@@ -1,4 +1,4 @@
-from os import listdir, mkdir, remove
+from os import listdir, mkdir
 from PIL import Image
 import albumentations as A
 import numpy as np
@@ -143,7 +143,7 @@ def save_imgd_labeld(imgs, label_path, img_path, save_root, vailed_labels, cat="
                 )
             ], bbox_params=A.BboxParams(format='yolo', min_visibility=0.5, label_fields=['class_labels']))
 
-            for k in range(ITER):
+            for k in range(ITER-1):
                 transformed = transform(image = np.array(temp), bboxes = bbox, class_labels = cls)
                 Image.fromarray(transformed['image']).save(save_root + '\\' + cat + '\\' + 'images' + '\\' + img[:-4] + '_' + str(k) + '.jpg')
                 label = ""
@@ -214,14 +214,14 @@ def bed_chair_together(bed_imgp: str, chair_imgp: str, bed_labelp: str, chair_la
 # fix labelname for further works.
 
 
-bed_chair_together(
-    r'D:\Workspace\SW_academy\Project1\Data\clean_bed_img',
-    r'D:\Workspace\SW_academy\Project1\Data\clean_chair_img',
-    r'D:\Workspace\SW_academy\Project1\Data\clean_bed_label',
-    r'D:\Workspace\SW_academy\Project1\Data\clean_chair_label',
-    r'D:\Workspace\SW_academy\Project1\Src',
-    cf=chair_cls_p24,
-)
+# bed_chair_together(
+#     r'D:\Workspace\SW_academy\Project1\Data\clean_bed_img',
+#     r'D:\Workspace\SW_academy\Project1\Data\clean_chair_img',
+#     r'D:\Workspace\SW_academy\Project1\Data\clean_bed_label',
+#     r'D:\Workspace\SW_academy\Project1\Data\clean_chair_label',
+#     r'D:\Workspace\SW_academy\Project1\Src',
+#     cf=chair_cls_p24,
+# )
 
 def update_labels(label_path, predefineds):
     classes = list()
@@ -239,8 +239,8 @@ def update_labels(label_path, predefineds):
         predefined_classes.extend(pred.splitlines())
     predefined_all = {i : k for i, k in enumerate(predefined_classes)}
     actual_cls = [predefined_all[i] for i in classes]
-    modified_labels_mapping = {str(k) : str(i) for i , k in enumerate(classes)} # maps : label -> modified label
-    actual_cls_mapping = {str(k): str(v) for k, v in zip(modified_labels_mapping.values(), actual_cls)} # maps : modified label -> actual_label
+    modified_labels_mapping = {str(k) : str(i) for i, k in enumerate(classes)} # maps : original label -> modified label
+    actual_cls_mapping = {str(k): str(v) for k, v in zip(modified_labels_mapping.values(), actual_cls)} # maps : modified label -> actual label(001, 010, ...)
     print(actual_cls, modified_labels_mapping, actual_cls_mapping)
 
     for label in listdir(label_path):
@@ -263,11 +263,16 @@ def update_labels(label_path, predefineds):
 
 
 
-actual_cls_mapping, modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src\train\labels',
+# train_actual_cls_mapping, train_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src\train\labels',
+#                                    [r'D:\Workspace\SW_academy\Project1\bed_classes.txt', r'D:\Workspace\SW_academy\Project1\chair_classes.txt'])
+test_actual_cls_mapping, test_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src\test\labels',
+                                   [r'D:\Workspace\SW_academy\Project1\bed_classes.txt', r'D:\Workspace\SW_academy\Project1\chair_classes.txt'])
+val_actual_cls_mapping, val_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src\val\labels',
                                    [r'D:\Workspace\SW_academy\Project1\bed_classes.txt', r'D:\Workspace\SW_academy\Project1\chair_classes.txt'])
 
-with open(r'D:\Workspace\SW_academy\Project1\actual_cls_mapping', 'wb') as fp:
-    pickle.dump(actual_cls_mapping, fp)
 
-with open(r'D:\Workspace\SW_academy\Project1\modified_labels_mapping', 'wb') as fp:
-    pickle.dump(modified_labels_mapping, fp)
+# with open(r'D:\Workspace\SW_academy\Project1\actual_cls_mapping', 'wb') as fp:
+#     pickle.dump(actual_cls_mapping, fp)
+#
+# with open(r'D:\Workspace\SW_academy\Project1\modified_labels_mapping', 'wb') as fp:
+#     pickle.dump(modified_labels_mapping, fp)
