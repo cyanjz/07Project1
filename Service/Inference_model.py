@@ -1,7 +1,6 @@
 import torch
 import cv2
 import numpy as np
-from utils.datasets import letterbox
 import torchvision
 import time
 
@@ -149,10 +148,9 @@ def load_image(image):
     return img
 
 
-def model_inference(image):
-    test = torch.load(r'/best.pt')
+def model_inference(image, weight):
     img = load_image(image)
-    model = torch.load(r'/best.pt')
+    model = torch.load(weight)
     model['model'].float().fuse().eval()
     with torch.no_grad():
         pred = model['model'](img)[0]
@@ -163,4 +161,4 @@ def model_inference(image):
     return result
 
 
-print(model_inference(r'C:\workplace\SW_academy\project1\optimize.jpg'))
+print(model_inference(r'D:\Workspace\SW_academy\Project1\optimize.jpg', r'D:\Workspace\SW_academy\Project1\best.pt'))
