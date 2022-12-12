@@ -62,7 +62,7 @@ def save_imgd_labeld(imgs, label_path, img_path, save_root, vailed_labels, cat="
         mkdir(save_root + '\\' + cat + '\\' + 'labels')
 
     # ITER for data agumentation
-    ITER = imgs[1]
+    ITER = imgs[1] - 1
 
     #image and label save begins
     for img in imgs[0]:
@@ -100,7 +100,7 @@ def save_imgd_labeld(imgs, label_path, img_path, save_root, vailed_labels, cat="
             print('failed to save/open image')
 
         # Data Agumentation for train set.
-        if cat == 'train':
+        if cat == 'train' and ITER != 0:
             cls_bbox_list = [line.split() for line in cls_bbox_str.splitlines()]
             cls = [int(b[0], 10) for b in cls_bbox_list]
             bbox = [[float(cord) for cord in b[1:]] for b in cls_bbox_list]
@@ -143,7 +143,7 @@ def save_imgd_labeld(imgs, label_path, img_path, save_root, vailed_labels, cat="
                 )
             ], bbox_params=A.BboxParams(format='yolo', min_visibility=0.5, label_fields=['class_labels']))
 
-            for k in range(ITER-1):
+            for k in range(ITER):
                 transformed = transform(image = np.array(temp), bboxes = bbox, class_labels = cls)
                 Image.fromarray(transformed['image']).save(save_root + '\\' + cat + '\\' + 'images' + '\\' + img[:-4] + '_' + str(k) + '.jpg')
                 label = ""
@@ -211,17 +211,15 @@ def bed_chair_together(bed_imgp: str, chair_imgp: str, bed_labelp: str, chair_la
     save_img_dict(save_root, bid, bed_imgp, bed_labelp, fraction, bf)
     save_img_dict(save_root, cid, chair_imgp, chair_labelp, fraction, cf)
 
-# fix labelname for further works.
 
-
-# bed_chair_together(
-#     r'D:\Workspace\SW_academy\Project1\Data\clean_bed_img',
-#     r'D:\Workspace\SW_academy\Project1\Data\clean_chair_img',
-#     r'D:\Workspace\SW_academy\Project1\Data\clean_bed_label',
-#     r'D:\Workspace\SW_academy\Project1\Data\clean_chair_label',
-#     r'D:\Workspace\SW_academy\Project1\Src',
-#     cf=chair_cls_p24,
-# )
+bed_chair_together(
+    r'D:\Workspace\SW_academy\Project1\Data\clean_bed_img',
+    r'D:\Workspace\SW_academy\Project1\Data\clean_chair_img',
+    r'D:\Workspace\SW_academy\Project1\Data\clean_bed_label',
+    r'D:\Workspace\SW_academy\Project1\Data\clean_chair_label',
+    r'D:\Workspace\SW_academy\Project1\Src2',
+    cf=chair_cls_p24,
+)
 
 def update_labels(label_path, predefineds):
     classes = list()
@@ -263,12 +261,12 @@ def update_labels(label_path, predefineds):
 
 
 
-# train_actual_cls_mapping, train_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src\train\labels',
+# train_actual_cls_mapping, train_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src2\train\labels',
 #                                    [r'D:\Workspace\SW_academy\Project1\bed_classes.txt', r'D:\Workspace\SW_academy\Project1\chair_classes.txt'])
-test_actual_cls_mapping, test_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src\test\labels',
-                                   [r'D:\Workspace\SW_academy\Project1\bed_classes.txt', r'D:\Workspace\SW_academy\Project1\chair_classes.txt'])
-val_actual_cls_mapping, val_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src\val\labels',
-                                   [r'D:\Workspace\SW_academy\Project1\bed_classes.txt', r'D:\Workspace\SW_academy\Project1\chair_classes.txt'])
+# test_actual_cls_mapping, test_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src2\test\labels',
+#                                    [r'D:\Workspace\SW_academy\Project1\bed_classes.txt', r'D:\Workspace\SW_academy\Project1\chair_classes.txt'])
+# val_actual_cls_mapping, val_modified_labels_mapping = update_labels(r'D:\Workspace\SW_academy\Project1\Src2\val\labels',
+#                                    [r'D:\Workspace\SW_academy\Project1\bed_classes.txt', r'D:\Workspace\SW_academy\Project1\chair_classes.txt'])
 
 
 # with open(r'D:\Workspace\SW_academy\Project1\actual_cls_mapping', 'wb') as fp:
