@@ -43,4 +43,4 @@ def get_label_dict(label_path):
     #         print(dump)
     return label_dict
 
-get_label_dict(r'D:\Workspace\SW_academy\Project1\Data\clean_chair_label')
+get_label_dict(r'/clean_chair_label')
