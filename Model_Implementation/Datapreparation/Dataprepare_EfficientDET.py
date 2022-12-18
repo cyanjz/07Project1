@@ -32,7 +32,7 @@ def label2csv(image_path, label_path, mapper):
     return label_df
 
 
-label_df = label2csv(r'/train/images',
+label_df = label2csv(r'../../Src/train/images',
                      r'D:\Workspace\SW_academy\Project1\Src\train\labels',
                      mapper)
 
