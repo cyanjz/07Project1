@@ -10,3 +10,4 @@ pyvenv.cfg
 venv/
 Src2/
 EfficientDET/
+Service/Server&DB/best.onnx

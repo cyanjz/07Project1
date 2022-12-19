@@ -229,7 +229,7 @@ def update_labels(label_path, predefineds):
         for line in cls_bbox.splitlines():
             if len(line) != 0:
                 classes.append(line.split()[0])
-    classes = sorted([int(i) for i in set(classes)], reverse = False)
+    classes = sorted([int(i) for i in set(classes)], reverse=False)
     predefined_classes = list()
     for predefined in predefineds:
         with open(predefined, 'r') as fp:
