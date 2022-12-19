@@ -1,5 +1,11 @@
 
 def build_query_statement(from_extension, cur, columns):
+    """
+    :param from_extension: class which items() method return iterator of tuple of key and value.
+    :param cur: DB cursor object.
+    :param columns: Object to handle different column names in different DBs.
+    :return: DB fetched result. {items : [{col1 : val1, col2 : val2, ...}, ...]}
+    """
     statement = list()
     DB_dict = {'0': 'bed', '1': 'chair'}
     for k, v in from_extension.items():
@@ -47,4 +53,7 @@ def build_query_statement(from_extension, cur, columns):
 
 
 def query_result(output):
+    """
+    Not used.
+    """
     return {'items' : [{'브랜드': item[0], 'imgurl': item[1], 'name': item[2], 'price': item[3], 'url': item[4], 'size': item[5]} for item in output]}
