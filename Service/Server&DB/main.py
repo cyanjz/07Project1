@@ -42,6 +42,10 @@ with open('actual_cls_mapping1', 'rb') as fp:
 
 @app.post("/inference")
 async def upload(file: UploadFile = File(...)):
+    """
+    :param file: Image file received from UI.
+    :return: Fetched result from DB.
+    """
     try:
         contents = file.file.read()
         with open(file.filename, 'wb') as f:
@@ -72,6 +76,10 @@ async def upload(file: UploadFile = File(...)):
 
 class tt(BaseModel):
     def items(self):
+        """
+        Overriding items method.
+        :return: list of key value pairs
+        """
         return [('대분류', self.대분류), ('브랜드', self.브랜드), ('팔걸이', self.팔걸이), ('등받이', self.등받이), ('다리형태', self.다리형태), ('모션', self.모션), ('저상', self.저상형), ('수납', self.수납형), ('헤드', self.헤드), ('색상태그', self.색상태그), ('주요재질', self.주요재질)]
 
     대분류:int
@@ -89,6 +97,10 @@ class tt(BaseModel):
 
 @app.post('/edittags/')
 async def edit_tags(item:tt):
+    """
+    :param item: file received from UI(json).
+    :return: Fetched result from DB.
+    """
     result = list()
     result.append(build_query_statement(item, cur, columns))
     return {'result' : result}
