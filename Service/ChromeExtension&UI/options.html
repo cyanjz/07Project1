@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Screenshot YouTube options</title>
+<style>
+body {
+	margin: 25px;
+	font-size: 13px;
+}
+code {
+	background: #ddd;
+	padding: 3px 3px;
+	font-size: 12px;
+	border-radius: 300px;
+	text-align: center;
+}
+h2 {
+	margin: 25px 0 10px;
+	font-size: 16px;
+
+}
+label {
+	display: block;
+	padding: 10px;
+	font-size: 14px;
+}
+label:hover {
+	background: #f7f7f7;
+}
+</style>
+</head>
+<body>
+<h1>Youtube 스크린샷</h1>
+<!-- <p>by <a href="http://futuremillennium.com" target="_blank">Zdeněk Gromnica a.k.a FutureMillennium</a></p>
+<p>Consider supporting on Patreon: <a href="https://www.patreon.com/FutureMillennium" target="_blank">https://www.patreon.com/FutureMillennium</a></p> -->
+
+<h2>환경설정</h2>
+
+<p><label><input type="checkbox" id="ScreenshotKeyCheck" /> <code>P</code> 스크린샷 단축키</label></p>
+<p><label>이미지 확장자:
+	<select id="ScreenshotFileFormat">
+		<option value="png" >png </option>
+		<option value="jpeg">jpeg</option>
+		<option value="webp">webp</option>
+	</select>
+</label></p>
+
+<script src="options.js"></script>
+<style> input, select{cursor:pointer;} </style>
+</body>
+</html>
